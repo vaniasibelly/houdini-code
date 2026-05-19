@@ -1,12 +1,12 @@
-name: host_network_namespace
+name: privileged_ports
 dockerfile:
   - path: Dockerfile
 dependencies:
   - server: False
 docker_config:
-  - network_mode: host
+  - network_mode: bridge
   - read_only: False
-  - security_opt: []
+  - security_opt: ["no-new-privileges"]
   - pid_mode: null
   - cpu_shares: 512
   - volumes: null
@@ -15,11 +15,11 @@ docker_config:
   - cpu_quota: null
   - cpu_period: null
   - cap_add: []
-  - cap_drop: []
+  - cap_drop: ["NET_BIND_SERVICE"]
   - privileged: False
-  - user: root
+  - user: huzi
   - pids_limit: null
   - ipc_mode: null
   - userns_mode: null
 trick:
-  - path: /houdini/tricks/HostNetworkNamespace
+  - path: /houdini/tricks/PrivilegedPorts

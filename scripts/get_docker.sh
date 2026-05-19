@@ -2,7 +2,7 @@
 
 get_version_from_config() {
     local variable_name=$1
-    local config_path="/home/huzi/Documents/houdini/constants/houdini_config.py"
+    local config_path="/home/sibelly/houdini-code/constants/houdini_config.py"
 
     python3 -c "
 import re
@@ -17,7 +17,7 @@ with open('$config_path', 'r') as f:
 remove_initd_scripts() {
     echo -e "\n🧹 Removing init.d scripts..."
 
-    local INITD_DIR="/home/huzi/Documents/houdini/buildroot/output/target/etc/init.d"
+    local INITD_DIR="/home/sibelly/houdini-code/buildroot/output/target/etc/init.d"
 
     if [ ! -d "$INITD_DIR" ]; then
         echo "❌ Directory not found: $INITD_DIR"
@@ -47,8 +47,8 @@ remove_initd_scripts() {
 remove_docker_binaries() {
     echo -e "\n🔧 Running remove_docker_binaries..."
 
-    local TARGET_DIR="/home/huzi/Documents/houdini/buildroot/output/target/usr/bin"
-    local TARGET_DIR_OVERLAY="/home/huzi/Documents/houdini/overlay/usr/bin"
+    local TARGET_DIR="/home/sibelly/houdini-code/buildroot/output/target/usr/bin"
+    local TARGET_DIR_OVERLAY="/home/sibelly/houdini-code/overlay/usr/bin"
 
     local BINARIES=(
         "docker"
@@ -97,8 +97,8 @@ get_docker_engine_binaries() {
 
     echo "✅ Docker engine version: $docker_engine_version"
 
-    local extracted_folder="/home/huzi/Documents/houdini/misc/extracted_docker_engines/docker-${docker_engine_version}.tgz"
-    local overlay_bin="/home/huzi/Documents/houdini/overlay/usr/bin"
+    local extracted_folder="/home/sibelly/houdini-code/misc/extracted_docker_engines/docker-${docker_engine_version}.tgz"
+    local overlay_bin="/home/sibelly/houdini-code/overlay/usr/bin"
 
     if [ -d "${extracted_folder}" ]; then
         echo "📦 Found extracted folder for docker-${docker_engine_version}.tgz"
@@ -122,8 +122,8 @@ get_runc_binaries() {
 
     echo "✅ RUNC version: $runc_version"
 
-    local extracted_folder="/home/huzi/Documents/houdini/misc/runc/runc-${runc_version}"
-    local overlay_bin="/home/huzi/Documents/houdini/overlay/usr/bin"
+    local extracted_folder="/home/sibelly/houdini-code/misc/runc/runc-${runc_version}"
+    local overlay_bin="/home/sibelly/houdini-code/overlay/usr/bin"
 
     if [ -d "${extracted_folder}" ]; then
         echo "📦 Found extracted folder for runc-${runc_version}"
@@ -161,8 +161,8 @@ get_crun_binaries() {
 
     echo "✅ CRUN version: $crun_version"
 
-    local extracted_folder="/home/huzi/Documents/houdini/misc/crun/$crun_version"
-    local overlay_bin="/home/huzi/Documents/houdini/overlay/usr/bin"
+    local extracted_folder="/home/sibelly/houdini-code/misc/crun/$crun_version"
+    local overlay_bin="/home/sibelly/houdini-code/overlay/usr/bin"
 
     if [ -d "${extracted_folder}" ]; then
         echo "📦 Found extracted folder for crun-${crun_version}"

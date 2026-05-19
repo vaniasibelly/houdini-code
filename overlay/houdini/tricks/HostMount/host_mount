@@ -1,25 +1,26 @@
-name: host_network_namespace
+name: host_mount
 dockerfile:
   - path: Dockerfile
 dependencies:
   - server: False
+  - file: 61240abcc5412ab41c9a4c44be7e898666c8bb9c650bf8985b8ae2ee8d4160ce
 docker_config:
-  - network_mode: host
+  - network_mode: bridge
   - read_only: False
   - security_opt: []
   - pid_mode: null
   - cpu_shares: 512
-  - volumes: null
+  - volumes: ["/etc:/host/etc:rw"]
   - mem_limit: null
   - cpuset_cpus: null
   - cpu_quota: null
   - cpu_period: null
   - cap_add: []
   - cap_drop: []
-  - privileged: False
+  - privileged: True
   - user: root
   - pids_limit: null
   - ipc_mode: null
   - userns_mode: null
 trick:
-  - path: /houdini/tricks/HostNetworkNamespace
+  - path: /houdini/tricks/HostMount

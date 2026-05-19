@@ -1,0 +1,53 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+    echo "Preparando ambiente para testes..."
+    
+    # 1. Montar Cgroups (Essencial para o Docker)
+    mkdir -p /sys/fs/cgroup
+    mount -t tmpfs cgroup /sys/fs/cgroup
+    for sys in cpu,cpuacct memory pids blkio devices; do
+        mkdir -p /sys/fs/cgroup/$sys
+        mount -t cgroup -o $sys cgroup /sys/fs/cgroup/$sys
+    done
+
+    # Cria o link simbólico que o Docker (runc) exige para o controlador de CPU
+    ln -sf /sys/fs/cgroup/cpu,cpuacct /sys/fs/cgroup/cpu
+    ln -sf /sys/fs/cgroup/cpu,cpuacct /sys/fs/cgroup/cpuacct
+
+    # Cria as pastas 'docker' dentro dos controladores para evitar erro de "No such file"
+    mkdir -p /sys/fs/cgroup/cpu,cpuacct/docker
+    mkdir -p /sys/fs/cgroup/memory/docker
+    mkdir -p /sys/fs/cgroup/pids/docker
+
+
+    # 2. Configurar Rede (Para o Docker Hub)
+    ip link set eth0 up
+    ip addr add 10.0.2.15/24 dev eth0
+    ip route add default via 10.0.2.2
+    echo "nameserver 8.8.8.8" > /etc/resolv.conf
+    
+    # 3. Criar Link Simbólico das Tricks (Para o Flask não dar 404)
+    mkdir -p /houdini
+    ln -sf /houdini/overlay/houdini/tricks /houdini/tricks
+    
+    # Garante que o arquivo 'privileged_ports' exista (sem a extensão .py)
+    # para que o servidor Flask o encontre conforme esperado.
+    if [ -f /houdini/tricks/PrivilegedPorts/privileged_ports.py ]; then
+        cp /houdini/tricks/PrivilegedPorts/privileged_ports.py /houdini/tricks/PrivilegedPorts/privileged_ports
+        chmod +x /houdini/tricks/PrivilegedPorts/privileged_ports
+    fi
+    ;;
+    
+    stop)
+    # Comandos para parar se necessário
+      ;;
+    
+    *)
+      echo "Usage: $0 {start|stop}"
+      exit 1
+      ;;
+esac
+
+exit 0

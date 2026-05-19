@@ -80,7 +80,7 @@ class BuildrootManager:
 	        "-net", "nic,model=virtio",
 	        "-net", f"user,hostfwd=tcp::{PORT}-:{PORT}",
 	        "-nographic",
-	        "-virtfs", "local,path=/home/huzi/Desktop,mount_tag=hostshare,security_model=mapped-file,id=hostshare"
+	        "-virtfs", "local,path=/home/sibelly/Desktop,mount_tag=hostshare,security_model=mapped-file,id=hostshare"
 	    ]
 
 	    terminal_cmd = [

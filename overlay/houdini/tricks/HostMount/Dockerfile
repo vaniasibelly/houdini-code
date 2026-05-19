@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-WORKDIR /proc/self/fd/5
+WORKDIR /
 
 # Copy the script
 COPY host_mount.sh /host_mount.sh

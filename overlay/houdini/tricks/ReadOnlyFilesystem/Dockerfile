@@ -1,19 +1,27 @@
-# Use the official Ubuntu image
+# Use a imagem oficial do Ubuntu
 FROM ubuntu:22.04
 
-# Install Python 3 and necessary packages
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv
+# Evita perguntas interativas durante a instalação (trava o build)
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Create and set up the working directory
+# Tenta limpar o cache e usar mirrors mais estáveis, se necessário
+RUN apt-get clean && \
+    apt-get update --fix-missing && \
+    apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-venv && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configura o diretório de trabalho
 WORKDIR /
 
-# Create a virtual environment and install packages
+# Cria o ambiente virtual e instala pacotes
 RUN python3 -m venv venv && \
     venv/bin/pip install --upgrade pip
 
-# Copy the Python script into the container
+# Copia o script
 COPY read_only_filesystem.py /read_only_filesystem.py
 
-# Specify the default command (you can override this when running the container)
+# Comando padrão
 CMD ["venv/bin/python", "/read_only_filesystem.py"]
